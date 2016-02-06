@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 
 var _ = require('lodash');
-var irc = require("irc");
-var bot = new irc.Client("irc.freenode.net", "embot", {userName: "embot",
-						       realName: "embot",
+var irc = require('irc');
+var bot = new irc.Client('irc.freenode.net', 'embot', {userName: 'embot',
+						       realName: 'embot',
 						       secure: true,
 						       port: 6697,
 						       autoRejoin: true});
@@ -18,7 +18,7 @@ function loadPlugin(name) {
 
 function unloadPlugin(name) {
   plugins[name].stop();
-  // TODO: decache it
+  delete require.cache[require.resolve('./plugins/' + name)];
   delete plugins[name];
 }
 
