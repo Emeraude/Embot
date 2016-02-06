@@ -15,5 +15,10 @@
   "bugs": {
     "url": "https://gitlab.com/Emeraude/embot/issues"
   },
-  "homepage": "https://gitlab.com/Emeraude/embot#README"
+  "homepage": "https://gitlab.com/Emeraude/embot#README",
+  "dependencies": {
+    "irc": "^0.4.1",
+    "irc-colors": "file:node_modules/irc-colors",
+    "lodash": "^4.2.1"
+  }
 }
