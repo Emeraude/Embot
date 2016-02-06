@@ -30,7 +30,20 @@ bot.addListener('join', function(chan, nick) {
   }
 });
 
+bot.addListener('selfMessage', function(chan, nick) {
+  for (i in plugins) {
+    if (typeof plugins[i].onEmitMessage == 'function') {
+      plugins[i].onEmitMessage(chan, nick);
+    }
+  }
+});
+
 bot.addListener('message', function(from, chan, msg) {
+  for (i in plugins) {
+    if (typeof plugins[i].onMessage == 'function') {
+      plugins[i].onMessage(from, chan, msg);
+    }
+  }
   if (admins[from.toLowerCase()] === true) {
     if (msg.match(/^!quit.*$/)) {
       for (i in plugins) {
@@ -76,7 +89,7 @@ bot.addListener('message', function(from, chan, msg) {
 	}
       }
       else {
-	bot.say(chan, 'Usage: !plugin stop | start | list');
+	bot.say(chan, 'Usage: !plugin stop | start | list'); // TODO: wrap it
       }
     }
   }

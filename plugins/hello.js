@@ -12,3 +12,11 @@ exports.stop = function() {
 exports.onJoin = function(chan, nick) {
   console.log('Hi on ' + chan + ', ' + nick + '!');
 };
+
+exports.onMessage = function(from, chan, msg) {
+  console.log(from + ' => ' + chan + ': ' + msg);
+}
+
+exports.onEmitMessage = function(chan, msg) {
+  console.log('=> ' + chan + ': ' + msg);
+}
