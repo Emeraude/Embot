@@ -11,6 +11,7 @@ exports.stop = function() {
 
 exports.onJoin = function(chan, nick) {
   console.log('Hi on ' + chan + ', ' + nick + '!');
+  Bot.say(chan, 'Hi on ' + chan + ', ' + nick + '!');
 };
 
 exports.onMessage = function(from, chan, msg) {

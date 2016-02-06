@@ -10,6 +10,11 @@ var bot = new irc.Client('irc.freenode.net', 'embot', {userName: 'embot',
 
 var admins = {emeraude: true}; // TODO: manage login name
 var plugins = {};
+Bot = {
+  say: function(chan, msg) {
+    bot.say(chan, msg);
+  }
+};
 
 function loadPlugin(name) {
   plugins[name] = require('./plugins/' + name);
