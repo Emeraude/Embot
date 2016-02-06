@@ -22,12 +22,30 @@ function unloadPlugin(name) {
   delete plugins[name];
 }
 
+bot.addListener('join', function(chan, nick) {
+  for (i in plugins) {
+    if (typeof plugins[i].onJoin == 'function') {
+      plugins[i].onJoin(chan, nick);
+    }
+  }
+});
+
 bot.addListener('message', function(from, chan, msg) {
   if (admins[from.toLowerCase()] === true) {
     if (msg.match(/^!quit.*$/)) {
       unloadPlugin('hello');
       bot.disconnect('bye');
       process.exit();
+    }
+    if (msg.match(/^!join.*$/)) {
+      var args = msg.split(/[\t ]+/);
+      if (args.length > 1) {
+	for (var i = 1; args[i]; ++i)
+	  bot.join(args[i]); // TODO: wrap it
+      }
+      else {
+	bot.say(chan, 'Usage: !join <chan>...'); // TODO: wrap it
+      }
     }
     else if (msg.match(/^!plugin.*$/)) {
       var args = msg.split(/[\t ]+/);
@@ -42,9 +60,9 @@ bot.addListener('message', function(from, chan, msg) {
 	}
 	else if (args[1] == 'list') {
 	  if (_.size(plugins) == 0)
-	    bot.say(chan, 'No plugin loaded');
+	    bot.say(chan, 'No plugin loaded'); // TODO: wrap it
 	  else
-	    bot.say(chan, 'Loaded plugins: ' + _.keys(plugins).join(' '));
+	    bot.say(chan, 'Loaded plugins: ' + _.keys(plugins).join(' ')); // TODO: wrap it
 	}
 	else if (args[1] == 'start') {
 	  if (args.length == 2) {

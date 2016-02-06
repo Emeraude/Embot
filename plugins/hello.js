@@ -8,3 +8,7 @@ exports.start = function() {
 exports.stop = function() {
   console.log('stop it !');
 };
+
+exports.onJoin = function(chan, nick) {
+  console.log('Hi on ' + chan + ', ' + nick + '!');
+};
