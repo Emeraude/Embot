@@ -33,7 +33,9 @@ bot.addListener('join', function(chan, nick) {
 bot.addListener('message', function(from, chan, msg) {
   if (admins[from.toLowerCase()] === true) {
     if (msg.match(/^!quit.*$/)) {
-      unloadPlugin('hello');
+      for (i in plugins) {
+	unloadPlugin(plugins[i]);
+      }
       bot.disconnect('bye');
       process.exit();
     }
