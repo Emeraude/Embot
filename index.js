@@ -92,9 +92,19 @@ bot.addListener('message', function(from, chan, msg) {
 	    loadPlugin(args[2]);
 	  }
 	}
+	else if (args[1] == 'version') {
+	  if (args.length == 2)
+	    bot.say(chan, 'Usage: !plugin version <name>'); // TODO: wrap it
+	  else {
+	    if (plugins[args[2]].version)
+	      bot.say(chan, plugins[args[2]].version);
+	    else
+	      bot.say(chan, 'No version information provided for plugin `' + args[2] + '`');
+	  }
+	}
       }
       else {
-	bot.say(chan, 'Usage: !plugin stop | start | list'); // TODO: wrap it
+	bot.say(chan, 'Usage: !plugin stop | start | list | version'); // TODO: wrap it
       }
     }
   }
