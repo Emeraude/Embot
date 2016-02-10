@@ -13,6 +13,12 @@ var plugins = {};
 Bot = {
   say: function(chan, msg) {
     bot.say(chan, msg);
+  },
+
+  isAdmin: function(user) {
+    if (admins[user] === true)
+      return true;
+    return false;
   }
 };
 
