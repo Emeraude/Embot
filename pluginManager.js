@@ -60,4 +60,14 @@ module.exports = function(bot, admins) {
   this.usage = function(args, chan) {
     bot.say(chan, 'Usage: !plugin stop | start | list | version');
   };
+
+  this.event = function(func) {
+    return function() {
+      for (i in plugins) {
+	if (typeof plugins[i][func] == 'function') {
+	  plugins[i][func].apply(undefined, arguments);
+	}
+      }
+    };
+  }
 };

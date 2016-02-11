@@ -23,28 +23,11 @@ Bot = {
   }
 };
 
-// bot.addListener('join', function(chan, nick) {
-//   for (i in plugins) {
-//     if (typeof plugins[i].onJoin == 'function') {
-//       plugins[i].onJoin(chan, nick);
-//     }
-//   }
-// });
-
-// bot.addListener('selfMessage', function(chan, nick) {
-//   for (i in plugins) {
-//     if (typeof plugins[i].onEmitMessage == 'function') {
-//       plugins[i].onEmitMessage(chan, nick);
-//     }
-//   }
-// });
+bot.addListener('join', plugin.event('onJoin'));
+bot.addListener('selfMessage', plugin.event('onEmitMessage'));
 
 bot.addListener('message', function(from, chan, msg) {
-  // for (i in plugins) {
-  //   if (typeof plugins[i].onMessage == 'function') {
-  //     plugins[i].onMessage(from, chan, msg);
-  //   }
-  // }
+  plugin.event('onMessage').apply(undefined, arguments);
   if (admins[from.toLowerCase()] === true) {
     if (msg.match(/^!quit.*$/)) {
       plugin.unloadAll();
@@ -55,10 +38,10 @@ bot.addListener('message', function(from, chan, msg) {
       var args = msg.split(/[\t ]+/);
       if (args.length > 1) {
 	for (var i = 1; args[i]; ++i)
-	  bot.join(args[i]); // TODO: wrap it
+	  bot.join(args[i]);
       }
       else {
-	bot.say(chan, 'Usage: !join <chan>...'); // TODO: wrap it
+	bot.say(chan, 'Usage: !join <chan>...');
       }
     }
     else if (msg.match(/^!plugin.*$/)) {
