@@ -2,6 +2,7 @@
 
 var _ = require('lodash');
 var irc = require('irc');
+var PluginManager = require('./pluginManager');
 var bot = new irc.Client('irc.freenode.net', 'embot', {userName: 'embot',
 						       realName: 'embot',
 						       secure: true,
@@ -9,7 +10,7 @@ var bot = new irc.Client('irc.freenode.net', 'embot', {userName: 'embot',
 						       autoRejoin: true});
 
 var admins = {emeraude: true}; // TODO: manage login name
-var plugins = {};
+var plugin = new PluginManager(bot, admins);
 Bot = {
   say: function(chan, msg) {
     bot.say(chan, msg);
@@ -22,44 +23,31 @@ Bot = {
   }
 };
 
-function loadPlugin(name) {
-  plugins[name] = require('./plugins/' + name);
-  plugins[name].start();
-}
+// bot.addListener('join', function(chan, nick) {
+//   for (i in plugins) {
+//     if (typeof plugins[i].onJoin == 'function') {
+//       plugins[i].onJoin(chan, nick);
+//     }
+//   }
+// });
 
-function unloadPlugin(name) {
-  plugins[name].stop();
-  delete require.cache[require.resolve('./plugins/' + name)];
-  delete plugins[name];
-}
-
-bot.addListener('join', function(chan, nick) {
-  for (i in plugins) {
-    if (typeof plugins[i].onJoin == 'function') {
-      plugins[i].onJoin(chan, nick);
-    }
-  }
-});
-
-bot.addListener('selfMessage', function(chan, nick) {
-  for (i in plugins) {
-    if (typeof plugins[i].onEmitMessage == 'function') {
-      plugins[i].onEmitMessage(chan, nick);
-    }
-  }
-});
+// bot.addListener('selfMessage', function(chan, nick) {
+//   for (i in plugins) {
+//     if (typeof plugins[i].onEmitMessage == 'function') {
+//       plugins[i].onEmitMessage(chan, nick);
+//     }
+//   }
+// });
 
 bot.addListener('message', function(from, chan, msg) {
-  for (i in plugins) {
-    if (typeof plugins[i].onMessage == 'function') {
-      plugins[i].onMessage(from, chan, msg);
-    }
-  }
+  // for (i in plugins) {
+  //   if (typeof plugins[i].onMessage == 'function') {
+  //     plugins[i].onMessage(from, chan, msg);
+  //   }
+  // }
   if (admins[from.toLowerCase()] === true) {
     if (msg.match(/^!quit.*$/)) {
-      for (i in plugins) {
-	unloadPlugin(plugins[i]);
-      }
+      plugin.unloadAll();
       bot.disconnect('bye');
       process.exit();
     }
@@ -76,41 +64,15 @@ bot.addListener('message', function(from, chan, msg) {
     else if (msg.match(/^!plugin.*$/)) {
       var args = msg.split(/[\t ]+/);
       if (args.length > 1) {
-	if (args[1] == 'stop') {
-	  if (args.length == 2) {
-	    bot.say(chan, 'Usage: !plugin stop <name>'); // TODO: wrap it
-	  }
-	  else {
-	    unloadPlugin(args[2]);
-	  }
-	}
-	else if (args[1] == 'list') {
-	  if (_.size(plugins) == 0)
-	    bot.say(chan, 'No plugin loaded'); // TODO: wrap it
-	  else
-	    bot.say(chan, 'Loaded plugins: ' + _.keys(plugins).join(' ')); // TODO: wrap it
-	}
-	else if (args[1] == 'start') {
-	  if (args.length == 2) {
-	    bot.say(chan, 'Usage: !plugin start <name>'); // TODO: wrap it
-	  }
-	  else {
-	    loadPlugin(args[2]);
-	  }
-	}
-	else if (args[1] == 'version') {
-	  if (args.length == 2)
-	    bot.say(chan, 'Usage: !plugin version <name>'); // TODO: wrap it
-	  else {
-	    if (plugins[args[2]].version)
-	      bot.say(chan, plugins[args[2]].version);
-	    else
-	      bot.say(chan, 'No version information provided for plugin `' + args[2] + '`');
-	  }
+	// This is slow, need refacto
+	var cmds = ['start', 'stop', 'list', 'version']
+	for (var i = 0; i < cmds.length; ++i) {
+	  if (args[1] == cmds[i])
+	    plugin[cmds[i]](args.splice(2), chan);
 	}
       }
       else {
-	bot.say(chan, 'Usage: !plugin stop | start | list | version'); // TODO: wrap it
+	plugin.usage(null, chan);
       }
     }
   }
@@ -122,7 +84,7 @@ bot.addListener('error', function(msg) {
 
 bot.addListener('registered', function() {
   console.log('connected');
-  loadPlugin('hello');
+  plugin.load('hello');
   bot.join('#4242', function() {
     console.log('joined !');
   });
