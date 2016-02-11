@@ -9,6 +9,7 @@ var bot = new irc.Client('irc.freenode.net', 'embot', {userName: 'embot',
 						       autoRejoin: true});
 
 var admins = {emeraude: true}; // TODO: manage login name
+// TODO : create a real object
 Bot = {
   say: function(chan, msg) {
     bot.say(chan, msg);
@@ -18,7 +19,7 @@ Bot = {
     if (admins[user.toLowerCase()] === true)
       return true;
     return false;
-  }
+  },
 };
 
 var plugin = new PluginManager();
@@ -29,6 +30,9 @@ bot.addListener('selfMessage', plugin.event('onEmitMessage'));
 bot.addListener('message', function(from, chan, msg) {
   plugin.event('onMessage').apply(undefined, arguments);
   if (Bot.isAdmin(from)) {
+    if (chan == Bot.nick) {
+      chan = from;
+    }
     if (msg.match(/^!quit.*$/)) {
       plugin.unloadAll();
       bot.disconnect('bye');
@@ -68,6 +72,7 @@ bot.addListener('error', function(msg) {
 bot.addListener('registered', function() {
   console.log('connected');
   plugin.load('hello');
+  Bot.nick = bot.nick // TODO : manage update of it
   bot.join('#4242', function() {
     console.log('joined !');
   });
