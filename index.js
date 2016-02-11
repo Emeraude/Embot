@@ -15,7 +15,7 @@ Bot = {
   },
 
   isAdmin: function(user) {
-    if (admins[user] === true)
+    if (admins[user.toLowerCase()] === true)
       return true;
     return false;
   }
@@ -28,7 +28,7 @@ bot.addListener('selfMessage', plugin.event('onEmitMessage'));
 
 bot.addListener('message', function(from, chan, msg) {
   plugin.event('onMessage').apply(undefined, arguments);
-  if (admins[from.toLowerCase()] === true) {
+  if (Bot.isAdmin(from)) {
     if (msg.match(/^!quit.*$/)) {
       plugin.unloadAll();
       bot.disconnect('bye');
