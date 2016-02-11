@@ -33,6 +33,20 @@ module.exports = function() {
     }
   };
 
+  this.restart = function(args, chan) {
+    if (args.length == 0) {
+      Bot.say(chan, 'Usage: !plugin restart <name>');
+    }
+    else {
+      this.unload(args[0]);
+      this.load(args[0]);
+      if (plugins[args[0]].version)
+	Bot.say(chan, 'Plugin ' + args[0] + '@' + plugins[args[0]].version + ' restarted');
+      else
+	Bot.say(chan, 'Plugin ' + args[0] + ' restarted');
+    }
+  };
+
   this.stop = function(args, chan) {
     if (args.length == 0) {
       Bot.say(chan, 'Usage: !plugin stop <name>');
@@ -67,7 +81,7 @@ module.exports = function() {
   };
 
   this.usage = function(args, chan) {
-    Bot.say(chan, 'Usage: !plugin stop | start | list | info');
+    Bot.say(chan, 'Usage: !plugin stop | start | restart | list | info');
   };
 
   this.event = function(func) {

@@ -48,7 +48,7 @@ bot.addListener('message', function(from, chan, msg) {
       var args = msg.split(/[\t ]+/);
       if (args.length > 1) {
 	// This is slow, need refacto
-	var cmds = ['start', 'stop', 'list', 'info']
+	var cmds = ['start', 'restart', 'stop', 'list', 'info']
 	for (var i = 0; i < cmds.length; ++i) {
 	  if (args[1] == cmds[i])
 	    plugin[cmds[i]](args.splice(2), chan);
