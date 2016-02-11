@@ -43,14 +43,19 @@ module.exports = function() {
     }
   };
 
-  this.version = function(args, chan) {
+  this.info = function(args, chan) {
     if (args.length == 0) {
-      Bot.say(chan, 'Usage: !plugin version <name>');
+      Bot.say(chan, 'Usage: !plugin info <name>');
     }
-    else if (plugins[args[0]].version) {
-      Bot.say(chan, plugins[args[0]].version);
-    } else {
-      Bot.say(chan, 'No version information provided for plugin `' + args[0] + '`');
+    else {
+      var msg = 'Plugin ' + args[0];
+      if (plugins[args[0]].version) {
+	msg += '@' + plugins[args[0]].version
+      }
+      if (plugins[args[0]].description) {
+	msg += ': ' + plugins[args[0]].description.replace(/\n/g, ' ');
+      }
+      Bot.say(chan, msg);
     }
   };
 
@@ -62,7 +67,7 @@ module.exports = function() {
   };
 
   this.usage = function(args, chan) {
-    Bot.say(chan, 'Usage: !plugin stop | start | list | version');
+    Bot.say(chan, 'Usage: !plugin stop | start | list | info');
   };
 
   this.event = function(func) {

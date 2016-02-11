@@ -1,5 +1,5 @@
 exports.version = "1.0.0";
-exports.description = "";
+exports.description = "Test plugin";
 
 exports.start = function() {
   console.log('started');
