@@ -81,7 +81,7 @@ module.exports = function() {
   };
 
   this.usage = function(args, chan) {
-    Bot.say(chan, 'Usage: !plugin stop | start | restart | list | info');
+    Bot.say(chan, 'Usage: !plugin info | list | restart | start | stop');
   };
 
   this.event = function(func) {
