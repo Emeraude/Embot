@@ -26,6 +26,10 @@ module.exports = function() {
     }
     else {
       this.load(args[0]);
+      if (plugins[args[0]].version)
+	Bot.say(chan, 'Plugin ' + args[0] + '@' + plugins[args[0]].version + ' started');
+      else
+	Bot.say(chan, 'Plugin ' + args[0] + ' started');
     }
   };
 
@@ -35,6 +39,7 @@ module.exports = function() {
     }
     else {
       this.unload(args[0]);
+      Bot.say(chan, 'Plugin ' + args[0] + ' stopped');
     }
   };
 
