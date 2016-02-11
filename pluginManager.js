@@ -1,7 +1,6 @@
 var _ = require('lodash');
 
-// TODO: replace bot by Bot (see index.js)
-module.exports = function(bot, admins) {
+module.exports = function() {
   var plugins = {};
 
   this.load = function(name) {
@@ -23,7 +22,7 @@ module.exports = function(bot, admins) {
 
   this.start = function(args, chan) {
     if (args.length == 0) {
-      bot.say(chan, 'Usage: !plugin start <name>');
+      Bot.say(chan, 'Usage: !plugin start <name>');
     }
     else {
       this.load(args[0]);
@@ -32,7 +31,7 @@ module.exports = function(bot, admins) {
 
   this.stop = function(args, chan) {
     if (args.length == 0) {
-      bot.say(chan, 'Usage: !plugin stop <name>');
+      Bot.say(chan, 'Usage: !plugin stop <name>');
     }
     else {
       this.unload(args[0]);
@@ -41,24 +40,24 @@ module.exports = function(bot, admins) {
 
   this.version = function(args, chan) {
     if (args.length == 0) {
-      bot.say(chan, 'Usage: !plugin version <name>');
+      Bot.say(chan, 'Usage: !plugin version <name>');
     }
     else if (plugins[args[0]].version) {
-      bot.say(chan, plugins[args[0]].version);
+      Bot.say(chan, plugins[args[0]].version);
     } else {
-      bot.say(chan, 'No version information provided for plugin `' + args[0] + '`');
+      Bot.say(chan, 'No version information provided for plugin `' + args[0] + '`');
     }
   };
 
   this.list = function(args, chan) {
     if (_.size(plugins) == 0)
-      bot.say(chan, 'No plugin loaded');
+      Bot.say(chan, 'No plugin loaded');
     else
-      bot.say(chan, 'Loaded plugins: ' + _.keys(plugins).join(' '));
+      Bot.say(chan, 'Loaded plugins: ' + _.keys(plugins).join(' '));
   };
 
   this.usage = function(args, chan) {
-    bot.say(chan, 'Usage: !plugin stop | start | list | version');
+    Bot.say(chan, 'Usage: !plugin stop | start | list | version');
   };
 
   this.event = function(func) {

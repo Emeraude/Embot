@@ -1,6 +1,5 @@
 #!/usr/bin/env node
 
-var _ = require('lodash');
 var irc = require('irc');
 var PluginManager = require('./pluginManager');
 var bot = new irc.Client('irc.freenode.net', 'embot', {userName: 'embot',
@@ -10,7 +9,6 @@ var bot = new irc.Client('irc.freenode.net', 'embot', {userName: 'embot',
 						       autoRejoin: true});
 
 var admins = {emeraude: true}; // TODO: manage login name
-var plugin = new PluginManager(bot, admins);
 Bot = {
   say: function(chan, msg) {
     bot.say(chan, msg);
@@ -22,6 +20,8 @@ Bot = {
     return false;
   }
 };
+
+var plugin = new PluginManager();
 
 bot.addListener('join', plugin.event('onJoin'));
 bot.addListener('selfMessage', plugin.event('onEmitMessage'));
