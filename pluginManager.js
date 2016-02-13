@@ -88,7 +88,11 @@ module.exports = function() {
     return function() {
       for (i in plugins) {
 	if (typeof plugins[i][func] == 'function') {
-	  plugins[i][func].apply(undefined, arguments);
+	  try {
+	    plugins[i][func].apply(undefined, arguments);
+	  } catch (e) {
+	    console.error(e);
+	  }
 	}
       }
     };
