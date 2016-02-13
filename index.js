@@ -26,6 +26,10 @@ var plugin = new PluginManager();
 
 bot.addListener('join', plugin.event('onJoin'));
 bot.addListener('selfMessage', plugin.event('onEmitMessage'));
+bot.addListener('part', plugin.event('onPart'));
+bot.addListener('quit', plugin.event('onQuit'));
+bot.addListener('notice', plugin.event('onNotice'));
+bot.addListener('action', plugin.event('onAction'));
 
 bot.addListener('message', function(from, chan, msg) {
   plugin.event('onMessage').apply(undefined, arguments);
