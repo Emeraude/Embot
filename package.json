@@ -19,7 +19,7 @@
   "homepage": "https://gitlab.com/Emeraude/embot#README",
   "dependencies": {
     "irc": "^0.4.1",
-    "irc-colors": "file:node_modules/irc-colors",
+    "irc-colors": "^1.2.0",
     "lodash": "^4.2.1"
   }
 }
