@@ -2,21 +2,24 @@
 
 var irc = require('irc');
 var PluginManager = require('./pluginManager');
-var bot = new irc.Client('irc.freenode.net', 'embot', {userName: 'embot',
-						       realName: 'embot',
-						       secure: true,
-						       port: 6697,
-						       autoRejoin: true});
+var config = require('./config.json');
+var bot = new irc.Client(config.server, config.name, {userName: config.name,
+						      realName: config.name,
+						      secure: config.ssl ? true : false,
+						      port: config.port,
+						      autoRejoin: true});
 
-var admins = {emeraude: true}; // TODO: manage login name
+if (!config.admins)
+  config.admins = {};
+
 // TODO : create a real object
 Bot = {
   say: function(chan, msg) {
     bot.say(chan, msg);
   },
 
-  isAdmin: function(user) {
-    if (admins[user.toLowerCase()] === true)
+  isAdmin: function(user) { // TODO: manage login name
+    if (config.admins[user.toLowerCase()] === true)
       return true;
     return false;
   },
@@ -77,7 +80,9 @@ bot.addListener('registered', function() {
   console.log('connected');
   plugin.load('hello');
   Bot.nick = bot.nick // TODO : manage update of it
-  bot.join('#4242', function() {
-    console.log('joined !');
-  });
+  for (i in config.channels) {
+    bot.join(config.channels[i], function() {
+      console.log('joined !');
+    });
+  }
 });

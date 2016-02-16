@@ -1,0 +1,10 @@
+{
+  "name": "embot",
+  "server": "irc.freenode.net",
+  "port": 6697,
+  "ssl": true,
+  "channels": ["#4242"],
+  "admins": {
+    "emeraude": true
+  }
+}
