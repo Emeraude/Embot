@@ -3,7 +3,7 @@
 A plugin based IRC bot, written in node.js.  
 An example plugin is located in file *plugins/hello.js*
 
-## Installation
+# Installation
 
 ```bash
 npm install
@@ -11,16 +11,16 @@ mv config.json.default config.json
 npm start
 ```
 
-## Commands
+# Commands
 
 If you are in the list of the bot administrators, you can manage the bot at the runtime, via some commands in the chans where the bot is (or via private message).
 
-### Builtin commands
+## Builtin commands
 
 - `!join <chan>...` Join the given channels
 - `!quit` Quit the client, exiting all the plugins properly and disconnecting from the server
 
-### Managing the plugins
+## Managing the plugins
 
 The plugins are in directory **plugins** and are loaded at the bot launch depending on the configuration file, but you can manage them at the runtime:
 
@@ -33,7 +33,7 @@ The plugins are in directory **plugins** and are loaded at the bot launch depend
 
 Note that the `start` and `restart` plugin will not use the cache of `require` function, so you can rewrite some part of your plugin and reload it at the runtime.
 
-## Writing your own plugins
+# Writing your own plugins
 
 Plugins must be in directory **plugins** and will be loaded using `require('./plugins/' + name)`, so it could be a single js file or a directory.  
 You can define several functions:
@@ -50,7 +50,7 @@ exports.onNotice(from, chan, msg); // Called when somebody send a notice to a ch
 exports.onAction(from, chan, msg); // Called when somebody do a /me
 ```
 
-### Attributes
+## Attributes
 
 You can also set some informations, as the version number of the plugin, or its description.
 
@@ -59,18 +59,18 @@ exports.version = "1.0.0";
 exports.description = "My awesome plugin !"
 ```
 
-### Bot object
+## Bot object
 
 In all the function you write for your plugin, the **Bot** global object will be available, defined as below:
 
-#### Bot.nick
+### Bot.nick
 
 A getter for the current nick of the bot (could be different from the nick given in configuration).
 
-#### Bot.say(channel, message)
+### Bot.say(channel, message)
 
 Send a `message` to the given `channel`. Note that `channel` could also be a user.
 
-#### Bot.isAdmin(user)
+### Bot.isAdmin(user)
 
 Return **true** if the user is a registered administrator of the bot, or **false** otherwise. Note that it's using the nick name and not the login name. It will be changed in the future.
