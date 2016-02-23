@@ -9,23 +9,34 @@ var bot = new irc.Client(config.server, config.name, {userName: config.name,
 						      port: config.port,
 						      autoRejoin: true});
 
-if (!config.admins)
+if (!config.admins) {
   config.admins = {};
+}
 
-// TODO : create a real object
-Bot = {
-  say: function(chan, msg) {
+function __Bot() {
+  var _nick;
+
+  this.say = function(chan, msg) {
     bot.say(chan, msg);
-  },
+  };
 
-  isAdmin: function(user) { // TODO: manage login name
+  this.isAdmin = function(user) { // TODO: manage login name
     if (config.admins[user.toLowerCase()] === true)
       return true;
     return false;
-  },
-};
+  };
 
-var plugin = new PluginManager();
+  this.__defineGetter__('nick', function() {
+    return _nick;
+  });
+
+  this.__defineSetter__('nick', function(nick) {
+    _nick = nick;
+  });
+}
+
+Bot = new __Bot();
+var plugin = new PluginManager(Bot);
 
 bot.addListener('join', plugin.event('onJoin'));
 bot.addListener('selfMessage', plugin.event('onEmitMessage'));
@@ -78,8 +89,12 @@ bot.addListener('error', function(msg) {
 
 bot.addListener('registered', function() {
   console.log('connected');
-  plugin.load('hello');
-  Bot.nick = bot.nick // TODO : manage update of it
+  for (i in config.plugins) {
+    if (config.plugins[i] == true) {
+      plugin.load(i);
+    }
+  }
+  Bot.nick = bot.nick; // TODO : manage update of it
   for (i in config.channels) {
     bot.join(config.channels[i], function() {
       console.log('joined !');

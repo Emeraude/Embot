@@ -27,7 +27,7 @@ exports.onPart = function(chan, nick, msg) {
 }
 
 exports.onQuit = function(nick, msg, chans) {
-  console.log(nick + 'has quit (' + msg + ')');
+  console.log(nick + ' has quit (' + msg + ')');
 }
 
 exports.onNotice = function(from, chan, msg) {
