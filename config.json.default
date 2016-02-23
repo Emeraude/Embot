@@ -6,5 +6,8 @@
   "channels": ["#4242"],
   "admins": {
     "emeraude": true
+  },
+  "plugins": {
+    "hello": false
   }
 }
