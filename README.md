@@ -11,6 +11,8 @@ mv config.json.default config.json
 npm start
 ```
 
+Note that if you are using `node 6.x`, you will need to install `nodenv` to make it work.
+
 # Commands
 
 If you are in the list of the bot administrators, you can manage the bot at the runtime, via some commands in the chans where the bot is (or via private message).
