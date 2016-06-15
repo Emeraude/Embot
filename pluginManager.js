@@ -15,7 +15,7 @@ module.exports = function() {
   };
 
   this.unloadAll = function() {
-    for (name in plugins) {
+    for (var name in plugins) {
       this.unload(name);
     }
   };
@@ -86,7 +86,7 @@ module.exports = function() {
 
   this.event = function(func) {
     return function() {
-      for (i in plugins) {
+      for (var i in plugins) {
 	if (typeof plugins[i][func] == 'function') {
 	  try {
 	    plugins[i][func].apply(undefined, arguments);

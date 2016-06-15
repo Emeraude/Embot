@@ -35,7 +35,7 @@ function __Bot() {
   });
 }
 
-Bot = new __Bot();
+global.Bot = new __Bot();
 var plugin = new PluginManager(Bot);
 
 bot.addListener('join', plugin.event('onJoin'));
@@ -89,13 +89,13 @@ bot.addListener('error', function(msg) {
 
 bot.addListener('registered', function() {
   console.log('connected');
-  for (i in config.plugins) {
+  for (var i in config.plugins) {
     if (config.plugins[i] == true) {
       plugin.load(i);
     }
   }
   Bot.nick = bot.nick; // TODO : manage update of it
-  for (i in config.channels) {
+  for (var i in config.channels) {
     bot.join(config.channels[i], function() {
       console.log('joined !');
     });
