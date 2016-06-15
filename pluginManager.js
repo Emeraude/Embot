@@ -51,6 +51,9 @@ module.exports = function() {
     if (args.length == 0) {
       Bot.say(chan, 'Usage: !plugin stop <name>');
     }
+    else if (plugins[args[0]] === undefined) {
+      Bot.say(chan, 'Plugin ' + args[0] + ' is not running');
+    }
     else {
       this.unload(args[0]);
       Bot.say(chan, 'Plugin ' + args[0] + ' stopped');
