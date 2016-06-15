@@ -21,7 +21,7 @@ module.exports = function() {
   };
 
   this.start = function(args, chan) {
-    if (args.length == 0) {
+    if (args.length === 0) {
       Bot.say(chan, 'Usage: !plugin start <name>');
     }
     else {
@@ -34,7 +34,7 @@ module.exports = function() {
   };
 
   this.restart = function(args, chan) {
-    if (args.length == 0) {
+    if (args.length === 0) {
       Bot.say(chan, 'Usage: !plugin restart <name>');
     }
     else {
@@ -48,7 +48,7 @@ module.exports = function() {
   };
 
   this.stop = function(args, chan) {
-    if (args.length == 0) {
+    if (args.length === 0) {
       Bot.say(chan, 'Usage: !plugin stop <name>');
     }
     else if (plugins[args[0]] === undefined) {
@@ -61,7 +61,7 @@ module.exports = function() {
   };
 
   this.info = function(args, chan) {
-    if (args.length == 0) {
+    if (args.length === 0) {
       Bot.say(chan, 'Usage: !plugin info <name>');
     }
     else {
@@ -77,7 +77,7 @@ module.exports = function() {
   };
 
   this.list = function(args, chan) {
-    if (_.size(plugins) == 0)
+    if (_.size(plugins) === 0)
       Bot.say(chan, 'No plugin loaded');
     else
       Bot.say(chan, 'Loaded plugins: ' + _.keys(plugins).join(' '));
@@ -90,7 +90,7 @@ module.exports = function() {
   this.event = function(func) {
     return function() {
       for (var i in plugins) {
-	if (typeof plugins[i][func] == 'function') {
+	if (typeof plugins[i][func] === 'function') {
 	  try {
 	    plugins[i][func].apply(undefined, arguments);
 	  } catch (e) {

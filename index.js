@@ -48,7 +48,7 @@ bot.addListener('action', plugin.event('onAction'));
 bot.addListener('message', function(from, chan, msg) {
   plugin.event('onMessage').apply(undefined, arguments);
   if (Bot.isAdmin(from)) {
-    if (chan == Bot.nick) {
+    if (chan === Bot.nick) {
       chan = from;
     }
     if (msg.match(/^!quit.*$/)) {
@@ -72,7 +72,7 @@ bot.addListener('message', function(from, chan, msg) {
 	// This is slow, need refacto
 	var cmds = ['start', 'restart', 'stop', 'list', 'info']
 	for (var i = 0; i < cmds.length; ++i) {
-	  if (args[1] == cmds[i])
+	  if (args[1] === cmds[i])
 	    plugin[cmds[i]](args.splice(2), chan);
 	}
       }
@@ -90,7 +90,7 @@ bot.addListener('error', function(msg) {
 bot.addListener('registered', function() {
   console.log('connected');
   for (var i in config.plugins) {
-    if (config.plugins[i] == true) {
+    if (config.plugins[i] === true) {
       plugin.load(i);
     }
   }
